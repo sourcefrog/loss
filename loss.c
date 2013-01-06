@@ -110,6 +110,7 @@ int main(int argc, char **argv) {
                 filename, strerror(errno));
         return 2;
     }
-    loss_parse(input);
+    loss_object *parsed = loss_parse(input, false);
+    (void) parsed;
     return 0;
 }

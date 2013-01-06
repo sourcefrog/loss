@@ -6,6 +6,7 @@
 #ifndef _LOSS_H
 #define _LOSS_H
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -43,7 +44,7 @@ loss_string *loss_read_token(FILE *input);
 
 loss_object *loss_cons_new(void);
 
-loss_object *loss_parse(FILE *input);
+loss_object *loss_parse(FILE *input, bool in_sublist);
 
 loss_object *loss_int_from_string(const char*);
 
