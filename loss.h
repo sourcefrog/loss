@@ -50,4 +50,5 @@ loss_object *loss_int_from_string(const char*);
 
 void loss_list_append(loss_object *, loss_object *);
 
+void loss_print_object(loss_object *obj, FILE *out);
 #endif // _LOSS_H

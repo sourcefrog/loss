@@ -111,6 +111,6 @@ int main(int argc, char **argv) {
         return 2;
     }
     loss_object *parsed = loss_parse(input, false);
-    (void) parsed;
+    loss_print_object(parsed, stdout);
     return 0;
 }
