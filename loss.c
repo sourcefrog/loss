@@ -112,5 +112,6 @@ int main(int argc, char **argv) {
     }
     loss_object *parsed = loss_parse(input, false);
     loss_print_object(parsed, stdout);
+    fputs("\n", stdout);
     return 0;
 }
