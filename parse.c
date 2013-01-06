@@ -32,18 +32,23 @@ loss_object *loss_parse(FILE *input, bool in_sublist) {
             } else
                 break;
         printf("token: %s\n", tok->s);
-        if (tok->s[0] == '(') {
+        char first = tok->s[0];
+        if (first == '(') {
             loss_object *sub_list = loss_parse(input, true);
             loss_list_append(result, sub_list);
-        } else if (tok->s[0] == ')') {
+        } else if (first == ')') {
             if (!in_sublist) {
                 fprintf(stderr, "loss: unexpected ')' at top level\n");
                 return NULL;
             } else
                 break;
-        } else if (isdigit(tok->s[0])) {
-            loss_object *num = loss_int_from_string(tok->s);
-            loss_list_append(result, num);
+        } else {
+            loss_object *next;
+            if (isdigit(first))
+                next = loss_int_from_string(tok->s);
+            else
+                next = loss_symbol_from_string(tok->s);
+            loss_list_append(result, next);
         }
     }
     return result;

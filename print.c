@@ -30,6 +30,9 @@ void loss_print_object(const loss_object *obj, FILE *out) {
         fputs("(", out);
         loss_print_list_body(cons, out);
         fputs(")", out);
+    } else if (obj->type == SYMBOL) {
+        const char *sym = obj->val.symbol;
+        fprintf(out, "%s ", sym);
     } else {
         fprintf(out, "<unprintable type=%#x> ", obj->type);
     }

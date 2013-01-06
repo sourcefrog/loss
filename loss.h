@@ -29,13 +29,14 @@ typedef struct loss_cons {
 // A discriminated-union object.
 struct loss_object {
 	enum {
-		STRING,
 		CONS,
-		INT
+		INT,
+		SYMBOL
 	} type;
 	union {
 		int64_t integer;
 		loss_cons cons;
+		char *symbol;
 	} val;
 };
 
@@ -51,4 +52,6 @@ loss_object *loss_int_from_string(const char*);
 void loss_list_append(loss_object *, loss_object *);
 
 void loss_print_object(const loss_object *obj, FILE *out);
+
+loss_object *loss_symbol_from_string(const char *s);
 #endif // _LOSS_H
