@@ -6,6 +6,8 @@
 #ifndef _LOSS_H
 #define _LOSS_H
 
+#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 
@@ -15,18 +17,36 @@ typedef struct {
 } loss_string;
 
 
+typedef struct loss_object loss_object;
+
 // A cons cell, with two downward pointers
 typedef struct loss_cons {
-	struct loss_object *hd, *tl;
+	loss_object *hd, *tl;
 } loss_cons;
 
 
-// A discriminated-union loss object.
-typedef struct {
+// A discriminated-union object.
+struct loss_object {
 	enum {
 		STRING,
-		CONS
+		CONS,
+		INT
 	} type;
-} loss_object;
+	union {
+		int64_t integer;
+		loss_cons cons;
+	} val;
+};
+
+void loss_tokenize(FILE *input);
+loss_string *loss_read_token(FILE *input);
+
+loss_object *loss_cons_new(void);
+
+loss_object *loss_parse(FILE *input);
+
+loss_object *loss_int_from_string(const char*);
+
+void loss_list_append(loss_object *, loss_object *);
 
 #endif // _LOSS_H

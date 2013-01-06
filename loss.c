@@ -110,6 +110,6 @@ int main(int argc, char **argv) {
                 filename, strerror(errno));
         return 2;
     }
-    loss_tokenize(input);
+    loss_parse(input);
     return 0;
 }
