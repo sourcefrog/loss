@@ -5,14 +5,30 @@
 #include "loss.h"
 
 
+// Evaluate each argument in the list, building a parallel list of actual
+// argument values.
+lossobj *loss_eval_arglist(lossobj *env, lossobj *args) {
+    if (!args)
+        return args;
+    assert(args->type == CONS);
+    lossobj *hd = args->val.cons.hd;
+    assert(hd);
+    return loss_cons_new_pair(
+        loss_eval(env, hd),
+        loss_eval_arglist(env, args->val.cons.tl));
+}
+
 // Call a function (builtin or lisp).
-lossobj *loss_call(lossobj *fn,
-                       lossobj *env,
-                       lossobj *args)
+// Evaluates the arguments.
+lossobj *loss_call(lossobj *env,
+                   lossobj *fn,
+                   lossobj *args)
 {
+    // TODO(mbp): For special forms, don't evaluate the args.
+    lossobj *concrete = loss_eval_arglist(env, args);
     switch (fn->type) {
     case BUILTIN:
-        return (fn->val.builtin.fn)(env, args);
+        return (fn->val.builtin.fn)(env, concrete);
     default:
         fprintf(stderr, "loss: object is not callable: ");
         loss_print_object(fn, false, stderr);
@@ -21,20 +37,15 @@ lossobj *loss_call(lossobj *fn,
     }
 }
 
-
-lossobj *loss_eval_list(lossobj *env,
-                            lossobj *expr) {
+lossobj *loss_eval_call(lossobj *env,
+                        lossobj *expr) {
     lossobj *fn = expr->val.cons.hd;
     assert(fn);
-
     lossobj *fn_value = loss_eval(env, fn);
     assert(fn_value);
-
-    // Call must be a proper list
     lossobj *tl = expr->val.cons.tl;
     assert(!tl || tl->type == CONS);
-
-    return loss_call(fn_value, env, tl);
+    return loss_call(env, fn_value, tl);
 }
 
 
@@ -52,9 +63,11 @@ lossobj *loss_eval(lossobj *env, lossobj *expr) {
     case SYMBOL:
         return loss_alist_lookup_sz(env, expr->val.symbol);
     case CONS:
-        return loss_eval_list(env, expr);
+        return loss_eval_call(env, expr);
     default:
-        fprintf(stderr, "loss: can't eval object type %#x\n", expr->type);
+        fprintf(stderr, "loss: can't eval object type=%#x:", expr->type);
+        loss_print_object(expr, false, stderr);
+        fputc('\n', stderr);
         abort();
     }
 }
