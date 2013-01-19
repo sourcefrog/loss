@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
     loss_object *parsed;
     while ((parsed = loss_parse(input, false))) {
-        loss_print_object(parsed, stdout);
+        loss_print_object(parsed, false, stdout);
         fputs("\n", stdout);
     }
 

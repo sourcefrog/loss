@@ -51,7 +51,7 @@ loss_object *loss_int_from_string(const char*);
 
 void loss_list_append(loss_object *, loss_object *);
 
-void loss_print_object(const loss_object *obj, FILE *out);
+void loss_print_object(const loss_object *obj, bool needspace, FILE *out);
 
 loss_object *loss_symbol_from_string(const char *s);
 
