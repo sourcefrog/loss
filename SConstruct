@@ -6,7 +6,7 @@ common_src = [
     'sym.c']
 
 env.Program('loss',
-    ['loss.c'] + common_src)
+    ['loss.c', 'eval.c'] + common_src)
 
 # Parse and print, but don't evaluate
 env.Program('loss_parse',

@@ -22,8 +22,11 @@ int main(int argc, char **argv) {
 
     loss_object *parsed;
     while ((parsed = loss_parse(input, false))) {
-        loss_print_object(parsed, false, stdout);
+        loss_object *result;
+        result = loss_eval(parsed);
+        loss_print_object(result, false, stdout);
         fputs("\n", stdout);
+
     }
 
     return 0;
