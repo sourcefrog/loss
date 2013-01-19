@@ -13,8 +13,8 @@
 
 
 typedef struct {
-	char *s; // nul-terminated string value
-	size_t n;  // == strlen(s)
+    char *s;                    // nul-terminated string value
+    size_t n;                   // == strlen(s)
 } loss_string;
 
 
@@ -22,22 +22,22 @@ typedef struct loss_object loss_object;
 
 // A cons cell, with two downward pointers
 typedef struct loss_cons {
-	loss_object *hd, *tl;
+    loss_object *hd, *tl;
 } loss_cons;
 
 
 // A discriminated-union object.
 struct loss_object {
-	enum {
-		CONS,
-		INT,
-		SYMBOL
-	} type;
-	union {
-		int64_t integer;
-		loss_cons cons;
-		char *symbol;
-	} val;
+    enum {
+        CONS,
+        INT,
+        SYMBOL
+    } type;
+    union {
+        int64_t integer;
+        loss_cons cons;
+        char *symbol;
+    } val;
 };
 
 void loss_tokenize(FILE *input);
@@ -48,7 +48,7 @@ loss_object *loss_cons_new(void);
 loss_object *loss_parse(FILE *input, bool in_sublist);
 FILE *loss_open_input(const char *filename);
 
-loss_object *loss_int_from_string(const char*);
+loss_object *loss_int_from_string(const char *);
 
 void loss_list_append(loss_object *, loss_object *);
 
@@ -58,8 +58,8 @@ loss_object *loss_symbol_from_string(const char *s);
 
 loss_object *loss_eval_progn(const loss_object *obj);
 loss_object *loss_eval_expr(const loss_object *expr);
-loss_string * loss_string_char(char ch);
+loss_string *loss_string_char(char ch);
 void loss_string_push(loss_string *tok, char ch);
 void loss_string_free(loss_string *);
 
-#endif // _LOSS_H
+#endif                          // _LOSS_H

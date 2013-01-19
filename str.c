@@ -4,7 +4,7 @@
 #include "loss.h"
 
 // Construct a new token containing one character
-loss_string * loss_string_char(char ch) {
+loss_string *loss_string_char(char ch) {
     loss_string *tok = malloc(sizeof *tok);
     tok->n = 1;
     tok->s = strndup(&ch, 1);
@@ -29,5 +29,3 @@ void loss_string_free(loss_string *tok) {
     free(tok->s);
     free(tok);
 }
-
-
