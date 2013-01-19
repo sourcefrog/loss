@@ -4,15 +4,16 @@
 
 // Evaluate an expression and return the result.
 //
-// Primitive types evaluate to themselves.
-loss_object *loss_eval(loss_object *expr) {
-again:
+// Integers evaluate to themselves.
+// Symbols evaluate to the binding of the symbol within the environment.
+loss_object *loss_eval(loss_object *env, loss_object *expr) {
     if (!expr)
         return NULL;
     switch (expr->type) {
     case INT:
-    case SYMBOL:
         return expr;
+    case SYMBOL:
+        return loss_alist_lookup_sz(env, expr->val.symbol);
     default:
         abort();
     }

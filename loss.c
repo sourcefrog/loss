@@ -20,10 +20,13 @@ int main(int argc, char **argv) {
     if (!input)
         return 2;
 
+    loss_object *env = loss_cons_new();
+    loss_bind_builtins(env);
+
     loss_object *parsed;
     while ((parsed = loss_parse(input, false))) {
         loss_object *result;
-        result = loss_eval(parsed);
+        result = loss_eval(env, parsed);
         loss_print_object(result, false, stdout);
         fputs("\n", stdout);
 

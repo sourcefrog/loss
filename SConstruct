@@ -1,6 +1,8 @@
 env = Environment(CFLAGS='-Wall -g', CC='clang')
 
 common_src = [
+    'alist.c',
+    'builtin.c',
     'parse.c', 'int.c', 'list.c', 'print.c',
     'str.c',
     'sym.c']

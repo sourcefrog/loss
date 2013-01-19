@@ -12,6 +12,14 @@ loss_string *loss_string_char(char ch) {
 }
 
 
+loss_object *loss_string_strz(const char *s) {
+    loss_object *o = calloc(1, sizeof *o);
+    o->type = STRING;
+    o->val.string = strdup(s);
+    return o;
+}
+
+
 // Append one character to an existing token.
 void loss_string_push(loss_string *tok, char ch) {
     // n is one-based; string indexes are 0-based.
