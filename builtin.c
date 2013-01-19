@@ -26,6 +26,19 @@ lossobj *lossbuiltin_plus(lossobj *env, lossobj *args) {
     return loss_int_new(result);
 }
 
+lossobj *lossbuiltin_display(lossobj *env, lossobj *args) {
+    bool needspace = false;
+    while (args) {
+        assert(args->type == CONS);
+        lossobj *hd = args->val.cons.hd;
+        loss_print_object(hd, needspace, stdout);
+        args = args->val.cons.tl;
+        needspace = true;
+    }
+    fputc('\n', stdout);
+    return NULL;
+}
+
 void loss_bind_builtin(lossobj *env, const char *name, lossbuiltin * fn) {
     loss_alist_append(
         env,
@@ -36,4 +49,5 @@ void loss_bind_builtin(lossobj *env, const char *name, lossbuiltin * fn) {
 // Create alist bindings for all builtin functions into `env`.
 void loss_bind_builtins(lossobj *env) {
     loss_bind_builtin(env, "+", lossbuiltin_plus);
+    loss_bind_builtin(env, "display", lossbuiltin_display);
 }
