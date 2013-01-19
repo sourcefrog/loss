@@ -12,7 +12,7 @@ env.Program('loss',
 
 # Parse and print, but don't evaluate
 env.Program('loss_parse',
-    ['loss_parse.c'] + common_src)
+    ['loss_parse.c', 'parse.c', 'str.c', 'int.c', 'print.c', 'list.c', 'sym.c'])
 
 # Run some parser tests
 env.Command('check',
