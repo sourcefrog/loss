@@ -20,14 +20,10 @@ int main(int argc, char **argv) {
         fprintf(stderr, "usage: %s FILENAME\n", program);
         return 1;
     }
-    const char *filename = argv[1];
 
-    FILE *input = fopen(filename, "r");
-    if (!input) {
-        fprintf(stderr, "%s: couldn't open %s: %s\n",
-                program, filename, strerror(errno));
+    FILE *input = loss_open_input(argv[1]);
+    if (!input)
         return 2;
-    }
 
     loss_object *parsed;
     while ((parsed = loss_parse(input, false))) {

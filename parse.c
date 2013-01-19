@@ -14,6 +14,22 @@
 #define LOG(...)
 
 
+FILE *loss_open_input(const char *filename) {
+    FILE *input;
+    if (!strcmp(filename, "-")) {
+        input = stdin;
+    } else {
+        input = fopen(filename, "r");
+        if (!input) {
+            fprintf(stderr, "loss: couldn't open %s: %s\n",
+                    filename, strerror(errno));
+            return NULL;
+        }
+    }
+    return input;
+}
+
+
 // Read one list or primitive from an input file, and return it.
 //
 // Parens introduce a list that continues until the closing paren,

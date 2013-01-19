@@ -46,6 +46,7 @@ loss_string *loss_read_token(FILE *input);
 loss_object *loss_cons_new(void);
 
 loss_object *loss_parse(FILE *input, bool in_sublist);
+FILE *loss_open_input(const char *filename);
 
 loss_object *loss_int_from_string(const char*);
 
