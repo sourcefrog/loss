@@ -49,8 +49,8 @@ void loss_print_object(const loss_object *obj, bool needspace, FILE *out) {
     case SYMBOL:
         fprintf(out, "%s", obj->val.symbol);
         break;
-    case NATIVE:
-        fprintf(out, "<native \"%s\">", obj->val.native.name);
+    case BUILTIN:
+        fprintf(out, "<builtin \"%s\">", obj->val.builtin.name);
         break;
     default:
         fprintf(out, "<unprintable type=%#x> ", obj->type);

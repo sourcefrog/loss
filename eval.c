@@ -5,14 +5,14 @@
 #include "loss.h"
 
 
-// Call a function (native or lisp).
+// Call a function (builtin or lisp).
 loss_object *loss_call(loss_object *fn,
                        loss_object *env,
                        loss_object *args)
 {
     switch (fn->type) {
-    case NATIVE:
-        return (fn->val.native.fn)(env, args);
+    case BUILTIN:
+        return (fn->val.builtin.fn)(env, args);
     default:
         fprintf(stderr, "loss: object is not callable: ");
         loss_print_object(fn, false, stderr);

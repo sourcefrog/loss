@@ -20,7 +20,7 @@ typedef struct {
 
 typedef struct loss_object loss_object;
 
-typedef loss_object *(loss_native)(loss_object *, loss_object *);
+typedef loss_object *(loss_builtin)(loss_object *, loss_object *);
 
 // A discriminated-union object.
 struct loss_object {
@@ -29,7 +29,7 @@ struct loss_object {
         INT,
         SYMBOL,
         STRING,
-        NATIVE,
+        BUILTIN,
     } type;
     union {
         int64_t integer;
@@ -40,8 +40,8 @@ struct loss_object {
         char *string;
         struct {
             const char *name;
-            loss_native *fn;
-        } native;
+            loss_builtin *fn;
+        } builtin;
     } val;
 };
 
