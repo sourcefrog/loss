@@ -1,11 +1,13 @@
+// Copyright 2013 Martin Pool
+
 #include <stdlib.h>
 #include <string.h>
 
 #include "loss.h"
 
 // Construct a new token containing one character
-loss_string *loss_string_char(char ch) {
-    loss_string *tok = malloc(sizeof *tok);
+loss_buf *loss_buf_char(char ch) {
+    loss_buf *tok = malloc(sizeof *tok);
     tok->n = 1;
     tok->s = strndup(&ch, 1);
     return tok;
@@ -21,7 +23,7 @@ loss_object *loss_string_strz(const char *s) {
 
 
 // Append one character to an existing token.
-void loss_string_push(loss_string *tok, char ch) {
+void loss_buf_push(loss_buf *tok, char ch) {
     // n is one-based; string indexes are 0-based.
     size_t new_char_index = tok->n;
     size_t new_nul_index = new_char_index + 1;
@@ -33,7 +35,7 @@ void loss_string_push(loss_string *tok, char ch) {
 }
 
 
-void loss_string_free(loss_string *tok) {
+void loss_buf_free(loss_buf *tok) {
     free(tok->s);
     free(tok);
 }

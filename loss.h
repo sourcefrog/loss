@@ -15,7 +15,7 @@
 typedef struct {
     char *s;                    // nul-terminated string value
     size_t n;                   // == strlen(s)
-} loss_string;
+} loss_buf;
 
 
 typedef struct loss_object loss_object;
@@ -47,7 +47,7 @@ struct loss_object {
 
 
 void loss_tokenize(FILE *input);
-loss_string *loss_read_token(FILE *input);
+loss_buf *loss_read_token(FILE *input);
 
 loss_object *loss_cons_new(void);
 loss_object *loss_cons_new_pair(loss_object *hd, loss_object *tl);
@@ -66,9 +66,9 @@ loss_object *loss_symbol_from_string(const char *s);
 loss_object *loss_eval(loss_object *env, loss_object *obj);
 
 loss_object *loss_string_strz(const char *);
-loss_string *loss_string_char(char ch);
-void loss_string_push(loss_string *tok, char ch);
-void loss_string_free(loss_string *);
+loss_buf *loss_buf_char(char ch);
+void loss_buf_push(loss_buf *tok, char ch);
+void loss_buf_free(loss_buf *);
 
 void loss_bind_builtins(loss_object *env);
 
