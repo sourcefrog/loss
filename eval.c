@@ -42,7 +42,8 @@ lossobj *loss_eval_call(lossobj *env,
     lossobj *fn = expr->val.cons.hd;
     assert(fn);
     lossobj *fn_value = loss_eval(env, fn);
-    assert(fn_value);
+    if (!fn_value)
+        return fn_value;
     lossobj *tl = expr->val.cons.tl;
     assert(!tl || tl->type == CONS);
     return loss_call(env, fn_value, tl);
@@ -57,11 +58,17 @@ lossobj *loss_eval_call(lossobj *env,
 lossobj *loss_eval(lossobj *env, lossobj *expr) {
     if (!expr)
         return NULL;
+    lossobj *result;
     switch (expr->type) {
     case INT:
         return expr;
     case SYMBOL:
-        return loss_alist_lookup_sz(env, expr->val.symbol);
+        result = loss_alist_lookup_sz(env, expr->val.symbol);
+        if (!result) {
+            fprintf(stderr, "loss: symbol \"%s\" not defined\n",
+                    expr->val.symbol);
+        }
+        return result;
     case CONS:
         return loss_eval_call(env, expr);
     default:
