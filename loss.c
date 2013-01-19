@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 
 #include "loss.h"
@@ -27,8 +28,10 @@ int main(int argc, char **argv) {
     while ((parsed = loss_parse(input, false))) {
         lossobj *result;
         result = loss_eval(env, parsed);
-        loss_print_object(result, false, stdout);
-        fputs("\n", stdout);
+        if (input == stdin && isatty(0)) {
+            loss_print_object(result, false, stdout);
+            fputs("\n", stdout);
+        }
     }
 
     return 0;
