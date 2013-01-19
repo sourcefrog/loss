@@ -14,8 +14,8 @@ loss_buf *loss_buf_char(char ch) {
 }
 
 
-loss_object *loss_string_strz(const char *s) {
-    loss_object *o = calloc(1, sizeof *o);
+lossobj *loss_string_strz(const char *s) {
+    lossobj *o = calloc(1, sizeof *o);
     o->type = STRING;
     o->val.string = strdup(s);
     return o;

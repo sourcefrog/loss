@@ -8,16 +8,16 @@
 #include "loss.h"
 
 
-loss_object *loss_cons_new(void) {
-    loss_object *obj = calloc(1, sizeof *obj);
+lossobj *loss_cons_new(void) {
+    lossobj *obj = calloc(1, sizeof *obj);
     assert(obj);
     obj->type = CONS;
     return obj;
 }
 
 
-loss_object *loss_cons_new_pair(loss_object *hd, loss_object *tl) {
-    loss_object *c = loss_cons_new();
+lossobj *loss_cons_new_pair(lossobj *hd, lossobj *tl) {
+    lossobj *c = loss_cons_new();
     c->val.cons.hd = hd;
     c->val.cons.tl = tl;
     return c;
@@ -26,10 +26,10 @@ loss_object *loss_cons_new_pair(loss_object *hd, loss_object *tl) {
 
 // Append a to the list in o.  *o must be a cons cell at the start of a
 // proper (possibly empty) list.
-void loss_list_append(loss_object *o, loss_object *a) {
+void loss_list_append(lossobj *o, lossobj *a) {
 again:
     assert(o->type == CONS);
-    loss_object *hd = o->val.cons.hd,
+    lossobj *hd = o->val.cons.hd,
         *tl = o->val.cons.tl;
     if (!hd) {
         // First item in an empty list

@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     if (!input)
         return 2;
 
-    loss_object *parsed;
+    lossobj *parsed;
     while ((parsed = loss_parse(input, false))) {
         loss_print_object(parsed, false, stdout);
         fputs("\n", stdout);

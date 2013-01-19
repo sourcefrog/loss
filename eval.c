@@ -6,9 +6,9 @@
 
 
 // Call a function (builtin or lisp).
-loss_object *loss_call(loss_object *fn,
-                       loss_object *env,
-                       loss_object *args)
+lossobj *loss_call(lossobj *fn,
+                       lossobj *env,
+                       lossobj *args)
 {
     switch (fn->type) {
     case BUILTIN:
@@ -22,16 +22,16 @@ loss_object *loss_call(loss_object *fn,
 }
 
 
-loss_object *loss_eval_list(loss_object *env,
-                            loss_object *expr) {
-    loss_object *fn = expr->val.cons.hd;
+lossobj *loss_eval_list(lossobj *env,
+                            lossobj *expr) {
+    lossobj *fn = expr->val.cons.hd;
     assert(fn);
 
-    loss_object *fn_value = loss_eval(env, fn);
+    lossobj *fn_value = loss_eval(env, fn);
     assert(fn_value);
 
     // Call must be a proper list
-    loss_object *tl = expr->val.cons.tl;
+    lossobj *tl = expr->val.cons.tl;
     assert(!tl || tl->type == CONS);
 
     return loss_call(fn_value, env, tl);
@@ -43,7 +43,7 @@ loss_object *loss_eval_list(loss_object *env,
 // Integers evaluate to themselves.
 // Symbols evaluate to the binding of the symbol within the environment.
 // Lists are the result of calling the first object with the arguments.
-loss_object *loss_eval(loss_object *env, loss_object *expr) {
+lossobj *loss_eval(lossobj *env, lossobj *expr) {
     if (!expr)
         return NULL;
     switch (expr->type) {

@@ -2,7 +2,7 @@
 #include <string.h>
 #include "loss.h"
 
-loss_object *loss_symbol_from_string(const char *s) {
+lossobj *loss_symbol_from_string(const char *s) {
     switch (*s) {
     case 0:
     case '(':
@@ -12,7 +12,7 @@ loss_object *loss_symbol_from_string(const char *s) {
         fprintf(stderr, "invalid symbol: \"%s\"\n", s);
         abort();
     }
-    loss_object *obj = calloc(1, sizeof *obj);
+    lossobj *obj = calloc(1, sizeof *obj);
     obj->type = SYMBOL;
     obj->val.symbol = strdup(s);
     return obj;

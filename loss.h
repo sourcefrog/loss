@@ -18,12 +18,12 @@ typedef struct {
 } loss_buf;
 
 
-typedef struct loss_object loss_object;
+typedef struct lossobj lossobj;
 
-typedef loss_object *(loss_builtin)(loss_object *, loss_object *);
+typedef lossobj *(loss_builtin)(lossobj *, lossobj *);
 
 // A discriminated-union object.
-struct loss_object {
+struct lossobj {
     enum {
         CONS,
         INT,
@@ -34,7 +34,7 @@ struct loss_object {
     union {
         int64_t integer;
         struct {
-            loss_object *hd, *tl;
+            lossobj *hd, *tl;
         } cons;
         char *symbol;
         char *string;
@@ -49,33 +49,33 @@ struct loss_object {
 void loss_tokenize(FILE *input);
 loss_buf *loss_read_token(FILE *input);
 
-loss_object *loss_cons_new(void);
-loss_object *loss_cons_new_pair(loss_object *hd, loss_object *tl);
+lossobj *loss_cons_new(void);
+lossobj *loss_cons_new_pair(lossobj *hd, lossobj *tl);
 
-loss_object *loss_parse(FILE *input, bool in_sublist);
+lossobj *loss_parse(FILE *input, bool in_sublist);
 FILE *loss_open_input(const char *filename);
 
-loss_object *loss_int_from_string(const char *);
-loss_object *loss_int_new(int64_t val);
+lossobj *loss_int_from_string(const char *);
+lossobj *loss_int_new(int64_t val);
 
-void loss_list_append(loss_object *, loss_object *);
+void loss_list_append(lossobj *, lossobj *);
 
-void loss_print_object(const loss_object *obj, bool needspace, FILE *out);
+void loss_print_object(const lossobj *obj, bool needspace, FILE *out);
 
-loss_object *loss_symbol_from_string(const char *s);
+lossobj *loss_symbol_from_string(const char *s);
 
-loss_object *loss_eval(loss_object *env, loss_object *obj);
+lossobj *loss_eval(lossobj *env, lossobj *obj);
 
-loss_object *loss_string_strz(const char *);
+lossobj *loss_string_strz(const char *);
 loss_buf *loss_buf_char(char ch);
 void loss_buf_push(loss_buf *tok, char ch);
 void loss_buf_free(loss_buf *);
 
-void loss_bind_builtins(loss_object *env);
+void loss_bind_builtins(lossobj *env);
 
-void loss_alist_append(loss_object *alist, loss_object *name, loss_object *value);
-loss_object *loss_alist_lookup_sz(
-    const loss_object *alist,
+void loss_alist_append(lossobj *alist, lossobj *name, lossobj *value);
+lossobj *loss_alist_lookup_sz(
+    const lossobj *alist,
     const char *);
 
 #endif                          // _LOSS_H

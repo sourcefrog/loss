@@ -4,10 +4,10 @@
 
 #include "loss.h"
 
-void loss_print_list_body(const loss_object *cons,
+void loss_print_list_body(const lossobj *cons,
                           bool needspace,
                           FILE *out) {
-    const loss_object *hd = cons->val.cons.hd,
+    const lossobj *hd = cons->val.cons.hd,
         *tl = cons->val.cons.tl;
     if (!hd && !tl)
         return;
@@ -28,7 +28,7 @@ void loss_print_list_body(const loss_object *cons,
 //
 // If needspace is true, a space will be printed before objects that must
 // be space separated from non-parens.
-void loss_print_object(const loss_object *obj, bool needspace, FILE *out) {
+void loss_print_object(const lossobj *obj, bool needspace, FILE *out) {
     if (needspace)
         fputs(" ", out);
 

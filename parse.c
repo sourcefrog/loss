@@ -40,7 +40,7 @@ FILE *loss_open_input(const char *filename) {
 // in_sublist: If true, we're reading a nested list and it must be
 // terminated by a paren, not eof.  If false, we'r reading the top level
 // of the file and it must be terminated by eof, not an unmatched paren.
-loss_object *loss_parse(FILE *input, bool in_sublist) {
+lossobj *loss_parse(FILE *input, bool in_sublist) {
     loss_buf *tok;
     tok = loss_read_token(input);
     if (!tok) {
@@ -54,8 +54,8 @@ loss_object *loss_parse(FILE *input, bool in_sublist) {
     LOG("token: %s\n", tok->s);
     const char first = tok->s[0];
     if (first == '(') {
-        loss_object *sub_list = loss_cons_new();
-        loss_object *subobj;
+        lossobj *sub_list = loss_cons_new();
+        lossobj *subobj;
         while ((subobj = loss_parse(input, true))) {
             loss_list_append(sub_list, subobj);
         }
