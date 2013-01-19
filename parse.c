@@ -5,8 +5,13 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
 #include "loss.h"
+
+
+#define LOG(f, ...)
 
 
 // Parse a sequence of tokens into a list.
@@ -31,7 +36,7 @@ loss_object *loss_parse(FILE *input, bool in_sublist) {
                 return NULL;
             } else
                 break;
-        printf("token: %s\n", tok->s);
+        LOG("token: %s\n", tok->s);
         char first = tok->s[0];
         if (first == '(') {
             loss_object *sub_list = loss_parse(input, true);
@@ -53,5 +58,63 @@ loss_object *loss_parse(FILE *input, bool in_sublist) {
     }
     return result;
 }
+
+
+
+// Read one token from the input file; return it as a string on the
+// heap.  Returns NULL for EOF or error.
+loss_string *loss_read_token(FILE *input) {
+    int ch;
+
+    while (1) {
+        ch = fgetc(input);
+        if (ch == EOF) {
+            if (!feof(input)) {
+                fprintf(stderr, "loss: error reading source: %s\n",
+                        strerror(errno));
+            }
+            return NULL;
+        } else if (ch == '(' || ch == ')')
+            return loss_string_char(ch);
+        else if (isspace(ch))
+            // Just swallow leading whitespace
+            ;
+        else
+            // ch is the start of a non-paren token.
+            break;
+    }
+
+    // Accumulate characters, starting with ch, until we hit either
+    // whitespace or a paren.
+    loss_string *tok = loss_string_char(ch);
+    while (1) {
+        int ch = fgetc(input);
+        if (ch == EOF) {
+            if (!feof(input)) {
+                fprintf(stderr, "loss: error reading source: %s\n",
+                        strerror(errno));
+                return NULL;
+            } else
+                return tok;
+        } else if (ch == '(' || ch == ')') {
+            ungetc(ch, input);
+            return tok;
+        } else if (isspace(ch))
+            return tok;
+        else
+            loss_string_push(tok, ch);
+    }
+}
+
+
+// Read Scheme from the named file; emit a stream of tokens.
+void loss_tokenize(FILE *input) {
+    loss_string *tok;
+    while ((tok = loss_read_token(input)) != NULL) {
+        LOG("token: %s\n", tok->s);
+        loss_string_free(tok);
+    }
+}
+
 
 // vim: et sw=4

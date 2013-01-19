@@ -1,4 +1,5 @@
 .sconsign*
 *~
 loss
+loss_parse
 *.o

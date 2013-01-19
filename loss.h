@@ -54,4 +54,11 @@ void loss_list_append(loss_object *, loss_object *);
 void loss_print_object(const loss_object *obj, FILE *out);
 
 loss_object *loss_symbol_from_string(const char *s);
+
+loss_object *loss_eval_progn(const loss_object *obj);
+loss_object *loss_eval_expr(const loss_object *expr);
+loss_string * loss_string_char(char ch);
+void loss_string_push(loss_string *tok, char ch);
+void loss_string_free(loss_string *);
+
 #endif // _LOSS_H

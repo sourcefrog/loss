@@ -32,7 +32,7 @@ again:
         o = cell->tl;
         goto again;
     } else {
-        // We're on the last occupied cell; we need to insert a new 
+        // We're on the last occupied cell; we need to insert a new
         // cell and then put the value in there.
         o = cell->tl = loss_cons_new();
         goto again;

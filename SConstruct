@@ -1,7 +1,15 @@
-env = Environment(CFLAGS='-Wall -g -fcolor-diagnostics', CC='clang')
-env.Program('loss',
-    ['loss.c', 'parse.c', 'int.c', 'list.c', 'print.c',
-     'sym.c'])
+env = Environment(CFLAGS='-Wall -g', CC='clang')
 
+common_src = [
+    'parse.c', 'int.c', 'list.c', 'print.c',
+    'str.c',
+    'sym.c']
+
+env.Program('loss',
+    ['loss.c'] + common_src)
+
+# Parse and print, but don't evaluate
+env.Program('loss_parse',
+    ['loss_parse.c'] + common_src)
 
 # vim: et sw=4 ft=python
