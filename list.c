@@ -15,14 +15,12 @@ lossobj *loss_cons_new(void) {
     return obj;
 }
 
-
 lossobj *loss_cons_new_pair(lossobj *hd, lossobj *tl) {
     lossobj *c = loss_cons_new();
     c->val.cons.hd = hd;
     c->val.cons.tl = tl;
     return c;
 }
-
 
 // Append a to the list in o.  *o must be a cons cell at the start of a
 // proper (possibly empty) list.
@@ -46,4 +44,14 @@ again:
         o = o->val.cons.tl = loss_cons_new();
         goto again;
     }
+}
+
+lossobj *loss_list_nth(lossobj *l, int n) {
+    while (n > 0) {
+        assert(l);
+        assert(l->type == CONS);
+        l = l->val.cons.tl;
+        n--;
+    }
+    return l->val.cons.hd;
 }

@@ -50,7 +50,9 @@ void loss_print_object(const lossobj *obj, bool needspace, FILE *out) {
         fprintf(out, "%s", obj->val.symbol);
         break;
     case BUILTIN:
-        fprintf(out, "<builtin \"%s\">", obj->val.builtin.name);
+        fprintf(out, "<builtin%s \"%s\">",
+                obj->val.builtin.special ? "-special" : "",
+                obj->val.builtin.name);
         break;
     default:
         fprintf(out, "<unprintable type=%#x> ", obj->type);

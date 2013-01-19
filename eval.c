@@ -24,11 +24,11 @@ lossobj *loss_call(lossobj *env,
                    lossobj *fn,
                    lossobj *args)
 {
-    // TODO(mbp): For special forms, don't evaluate the args.
-    lossobj *concrete = loss_eval_arglist(env, args);
     switch (fn->type) {
     case BUILTIN:
-        return (fn->val.builtin.fn)(env, concrete);
+        if (!fn->val.builtin.special)
+            args = loss_eval_arglist(env, args);
+        return (fn->val.builtin.fn)(env, args);
     default:
         fprintf(stderr, "loss: object is not callable: ");
         loss_print_object(fn, false, stderr);
@@ -48,7 +48,6 @@ lossobj *loss_eval_call(lossobj *env,
     assert(!tl || tl->type == CONS);
     return loss_call(env, fn_value, tl);
 }
-
 
 // Evaluate an expression and return the result.
 //
