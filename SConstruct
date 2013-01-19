@@ -12,4 +12,7 @@ env.Program('loss',
 env.Program('loss_parse',
     ['loss_parse.c'] + common_src)
 
+# Run some parser tests
+env.Command('check', 'loss_parse', './test.sh')
+
 # vim: et sw=4 ft=python
