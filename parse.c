@@ -11,54 +11,48 @@
 #include "loss.h"
 
 
-#define LOG(f, ...)
+#define LOG(...)
 
 
-// Parse a sequence of tokens into a list.
+// Read one list or primitive from an input file, and return it.
 //
-// Parens introduce a list that continues until the closing paren.
-// Numbers are converted to ints.
+// Parens introduce a list that continues until the closing paren,
+// and the whole thing is read.
+// Numbers are converted to ints and returned directly.
 // Everything else is left as a symbol.
 //
 // in_sublist: If true, we're reading a nested list and it must be
 // terminated by a paren, not eof.  If false, we'r reading the top level
 // of the file and it must be terminated by eof, not an unmatched paren.
-//
 loss_object *loss_parse(FILE *input, bool in_sublist) {
     loss_string *tok;
-    loss_object *result = loss_cons_new();
-
-    while (true) {
-        tok = loss_read_token(input);
-        if (!tok)
-            if (in_sublist) {
-                fprintf(stderr, "loss: unexpected eof in list\n");
-                return NULL;
-            } else
-                break;
-        LOG("token: %s\n", tok->s);
-        char first = tok->s[0];
-        if (first == '(') {
-            loss_object *sub_list = loss_parse(input, true);
-            loss_list_append(result, sub_list);
-        } else if (first == ')') {
-            if (!in_sublist) {
-                fprintf(stderr, "loss: unexpected ')' at top level\n");
-                return NULL;
-            } else
-                break;
-        } else {
-            loss_object *next;
-            if (isdigit(first))
-                next = loss_int_from_string(tok->s);
-            else
-                next = loss_symbol_from_string(tok->s);
-            loss_list_append(result, next);
+    tok = loss_read_token(input);
+    if (!tok) {
+        if (in_sublist) {
+            // TODO: This causes a message, but then we proceed as if the
+            // list was properly terminated.  May not matter.
+            fprintf(stderr, "loss: unexpected eof in list\n");
         }
+        return NULL;
     }
-    return result;
+    LOG("token: %s\n", tok->s);
+    const char first = tok->s[0];
+    if (first == '(') {
+        loss_object *sub_list = loss_cons_new();
+        loss_object *subobj;
+        while ((subobj = loss_parse(input, true))) {
+            loss_list_append(sub_list, subobj);
+        }
+        return sub_list;
+    } else if (first == ')') {
+        if (!in_sublist)
+            fprintf(stderr, "loss: unexpected ')' at top level\n");
+        return NULL;
+    } else if (isdigit(first))
+        return loss_int_from_string(tok->s);
+    else
+        return loss_symbol_from_string(tok->s);
 }
-
 
 
 // Read one token from the input file; return it as a string on the

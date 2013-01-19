@@ -2,6 +2,8 @@
 //
 // Copyright 2013 Martin Pool
 
+// loss_parse: Parse expressions one at a time and print their unevaluated value.
+
 
 #include <ctype.h>
 #include <errno.h>
@@ -26,9 +28,12 @@ int main(int argc, char **argv) {
                 program, filename, strerror(errno));
         return 2;
     }
-    loss_object *parsed = loss_parse(input, false);
-    loss_print_object(parsed, stdout);
-    fputs("\n", stdout);
+
+    loss_object *parsed;
+    while ((parsed = loss_parse(input, false))) {
+        loss_print_object(parsed, stdout);
+        fputs("\n", stdout);
+    }
 
     return 0;
 }
