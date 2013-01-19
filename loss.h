@@ -22,7 +22,6 @@ typedef struct lossobj lossobj;
 
 typedef lossobj *(lossbuiltin)(lossobj *, lossobj *);
 
-// A discriminated-union object.
 struct lossobj {
     enum {
         CONS,

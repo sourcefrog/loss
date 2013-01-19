@@ -71,27 +71,50 @@ lossobj *loss_parse(FILE *input, bool in_sublist) {
 }
 
 
+void loss_consume_comment(FILE *input) {
+    int ch;
+    while (1) {
+        ch = fgetc(input);
+        switch (ch) {
+        case EOF:
+            if (!feof(input)) {
+                fprintf(stderr, "loss: error reading source: %s\n",
+                        strerror(errno));
+            }
+            return;
+        case '\n':
+            return;
+        }
+    }
+}
+
+
 // Read one token from the input file; return it as a string on the
 // heap.  Returns NULL for EOF or error.
 lossbuf *loss_read_token(FILE *input) {
     int ch;
 
-    while (1) {
-        ch = fgetc(input);
-        if (ch == EOF) {
-            if (!feof(input)) {
-                fprintf(stderr, "loss: error reading source: %s\n",
-                        strerror(errno));
-            }
-            return NULL;
-        } else if (ch == '(' || ch == ')')
-            return lossbuf_char(ch);
-        else if (isspace(ch))
-            // Just swallow leading whitespace
-            ;
-        else
-            // ch is the start of a non-paren token.
-            break;
+  start_token:
+    ch = fgetc(input);
+    switch (ch) {
+    case EOF:
+        if (!feof(input)) {
+            fprintf(stderr, "loss: error reading source: %s\n",
+                    strerror(errno));
+        }
+        return NULL;
+    case '(':
+    case ')':
+        return lossbuf_char(ch);
+    case ' ':
+    case '\n':
+    case '\t':
+    case '\f':
+        // swallow leading whitespace
+        goto start_token;
+    case ';':
+        loss_consume_comment(input);
+        goto start_token;
     }
 
     // Accumulate characters, starting with ch, until we hit either

@@ -29,7 +29,6 @@ int main(int argc, char **argv) {
         result = loss_eval(env, parsed);
         loss_print_object(result, false, stdout);
         fputs("\n", stdout);
-
     }
 
     return 0;
