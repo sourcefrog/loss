@@ -41,7 +41,7 @@ FILE *loss_open_input(const char *filename) {
 // terminated by a paren, not eof.  If false, we'r reading the top level
 // of the file and it must be terminated by eof, not an unmatched paren.
 lossobj *loss_parse(FILE *input, bool in_sublist) {
-    loss_buf *tok;
+    lossbuf *tok;
     tok = loss_read_token(input);
     if (!tok) {
         if (in_sublist) {
@@ -73,7 +73,7 @@ lossobj *loss_parse(FILE *input, bool in_sublist) {
 
 // Read one token from the input file; return it as a string on the
 // heap.  Returns NULL for EOF or error.
-loss_buf *loss_read_token(FILE *input) {
+lossbuf *loss_read_token(FILE *input) {
     int ch;
 
     while (1) {
@@ -85,7 +85,7 @@ loss_buf *loss_read_token(FILE *input) {
             }
             return NULL;
         } else if (ch == '(' || ch == ')')
-            return loss_buf_char(ch);
+            return lossbuf_char(ch);
         else if (isspace(ch))
             // Just swallow leading whitespace
             ;
@@ -96,7 +96,7 @@ loss_buf *loss_read_token(FILE *input) {
 
     // Accumulate characters, starting with ch, until we hit either
     // whitespace or a paren.
-    loss_buf *tok = loss_buf_char(ch);
+    lossbuf *tok = lossbuf_char(ch);
     while (1) {
         int ch = fgetc(input);
         if (ch == EOF) {
@@ -112,17 +112,17 @@ loss_buf *loss_read_token(FILE *input) {
         } else if (isspace(ch))
             return tok;
         else
-            loss_buf_push(tok, ch);
+            lossbuf_push(tok, ch);
     }
 }
 
 
 // Read Scheme from the named file; emit a stream of tokens.
 void loss_tokenize(FILE *input) {
-    loss_buf *tok;
+    lossbuf *tok;
     while ((tok = loss_read_token(input)) != NULL) {
         LOG("token: %s\n", tok->s);
-        loss_buf_free(tok);
+        lossbuf_free(tok);
     }
 }
 

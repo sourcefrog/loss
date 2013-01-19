@@ -6,8 +6,8 @@
 #include "loss.h"
 
 // Construct a new token containing one character
-loss_buf *loss_buf_char(char ch) {
-    loss_buf *tok = malloc(sizeof *tok);
+lossbuf *lossbuf_char(char ch) {
+    lossbuf *tok = malloc(sizeof *tok);
     tok->n = 1;
     tok->s = strndup(&ch, 1);
     return tok;
@@ -23,7 +23,7 @@ lossobj *loss_string_strz(const char *s) {
 
 
 // Append one character to an existing token.
-void loss_buf_push(loss_buf *tok, char ch) {
+void lossbuf_push(lossbuf *tok, char ch) {
     // n is one-based; string indexes are 0-based.
     size_t new_char_index = tok->n;
     size_t new_nul_index = new_char_index + 1;
@@ -35,7 +35,7 @@ void loss_buf_push(loss_buf *tok, char ch) {
 }
 
 
-void loss_buf_free(loss_buf *tok) {
+void lossbuf_free(lossbuf *tok) {
     free(tok->s);
     free(tok);
 }

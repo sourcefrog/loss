@@ -15,12 +15,12 @@
 typedef struct {
     char *s;                    // nul-terminated string value
     size_t n;                   // == strlen(s)
-} loss_buf;
+} lossbuf;
 
 
 typedef struct lossobj lossobj;
 
-typedef lossobj *(loss_builtin)(lossobj *, lossobj *);
+typedef lossobj *(lossbuiltin)(lossobj *, lossobj *);
 
 // A discriminated-union object.
 struct lossobj {
@@ -40,14 +40,14 @@ struct lossobj {
         char *string;
         struct {
             const char *name;
-            loss_builtin *fn;
+            lossbuiltin *fn;
         } builtin;
     } val;
 };
 
 
 void loss_tokenize(FILE *input);
-loss_buf *loss_read_token(FILE *input);
+lossbuf *loss_read_token(FILE *input);
 
 lossobj *loss_cons_new(void);
 lossobj *loss_cons_new_pair(lossobj *hd, lossobj *tl);
@@ -67,9 +67,9 @@ lossobj *loss_symbol_from_string(const char *s);
 lossobj *loss_eval(lossobj *env, lossobj *obj);
 
 lossobj *loss_string_strz(const char *);
-loss_buf *loss_buf_char(char ch);
-void loss_buf_push(loss_buf *tok, char ch);
-void loss_buf_free(loss_buf *);
+lossbuf *lossbuf_char(char ch);
+void lossbuf_push(lossbuf *tok, char ch);
+void lossbuf_free(lossbuf *);
 
 void loss_bind_builtins(lossobj *env);
 
