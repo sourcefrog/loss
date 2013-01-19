@@ -1,4 +1,4 @@
-env = Environment(CFLAGS='-Wall -g', CC='clang')
+env = Environment(CFLAGS='-Wall -g -Werror', CC='clang')
 
 common_src = [
     'alist.c',

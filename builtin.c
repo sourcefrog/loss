@@ -1,4 +1,6 @@
-// loss builtin functions
+// Copyright 2013 Martin Pool
+
+#include <assert.h>
 
 #include "loss.h"
 
@@ -15,7 +17,17 @@ loss_object *loss_native_new(const char *name,
 
 
 loss_object *loss_builtin_plus(loss_object *env, loss_object *args) {
-    return loss_int_from_string("13");  // approximately
+    int64_t result = 0;
+
+    while (args) {
+        assert(args->type == CONS);
+        loss_object *hd = args->val.cons.hd;
+        assert(hd && hd->type == INT);
+        result += hd->val.integer;
+        args = args->val.cons.tl;
+    }
+
+    return loss_int_new(result);
 }
 
 

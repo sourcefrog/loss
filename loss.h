@@ -56,6 +56,7 @@ loss_object *loss_parse(FILE *input, bool in_sublist);
 FILE *loss_open_input(const char *filename);
 
 loss_object *loss_int_from_string(const char *);
+loss_object *loss_int_new(int64_t val);
 
 void loss_list_append(loss_object *, loss_object *);
 
