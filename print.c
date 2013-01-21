@@ -1,5 +1,6 @@
 // Copyright 2013 Martin Pool
 
+#include <inttypes.h>
 #include <stdio.h>
 
 #include "loss.h"
@@ -39,7 +40,7 @@ void loss_print_object(const lossobj *obj, bool needspace, FILE *out) {
 
     switch (obj->type) {
     case INT:
-        fprintf(out, "%ld", obj->val.integer);
+        fprintf(out, "%" PRId64, obj->val.integer);
         break;
     case CONS:
         fputs("(", out);
