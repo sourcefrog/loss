@@ -1,4 +1,10 @@
+import os
+
 env = Environment(CFLAGS='-Wall -g -Werror', CC='clang')
+
+# clang needs to see $TERM to colorize its output
+# <http://stackoverflow.com/q/9922521/243712>
+env['ENV']['TERM'] = os.environ['TERM']
 
 common_src = [
     'alist.c',
