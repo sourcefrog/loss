@@ -55,3 +55,13 @@ lossobj *loss_list_nth(lossobj *l, int n) {
     }
     return l->val.cons.hd;
 }
+
+int loss_list_len(lossobj *l) {
+    int i = 0;
+    while (l) {
+        assert(l->type == CONS);
+        i++;
+        l = l->val.cons.tl;
+    }
+    return i;
+}

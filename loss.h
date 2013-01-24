@@ -60,6 +60,7 @@ lossobj *loss_int_new(int64_t val);
 
 void loss_list_append(lossobj *, lossobj *);
 lossobj *loss_list_nth(lossobj *l, int n);
+int loss_list_len(lossobj *l);
 
 void loss_print_object(const lossobj *obj, bool needspace, FILE *out);
 
