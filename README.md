@@ -1,7 +1,7 @@
 Loss
 ====
 
-A very crude Scheme interpreter in C.
+An interpreter for a small Scheme/Clojure-like language.
 
 Just for fun. Not useful at the moment, and not licenced.
 
